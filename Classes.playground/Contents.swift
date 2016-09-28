@@ -16,10 +16,24 @@ import Foundation
  
  Create a new class called `Person`. This class should include properties for a person's first and last name. Name these properties `firstName` and `lastName`. You should also create an initializer that takes a first and last name as parameters and assigns them to the property.
  */
-// write your code here
 
 
-
+class Person {
+    var firstName: String
+    var lastName: String
+    var fullName: String {
+        return "\(firstName) \(lastName)"
+    }
+    
+    init(firstName: String, lastName: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+    }
+    
+    func greet(_ person: Person) -> String {
+        return "Hello, \(person.firstName)!"
+    }
+}
 
 
 
@@ -81,8 +95,28 @@ extension Double {
     }
 }
 
-// write your code here
 
+class Transaction {
+    var type: String
+    var amount: Double
+    
+    
+    init(type: String, amount: Double){
+        self.type = type
+        self.amount = amount
+    }
+    
+    var description: String {
+        if type == "in" {
+            return "Transaction: credit in the amount of $\(amount.toMoney)"
+        } else if type == "out" {
+            return "Transaction: debit in the amount of $\(amount.toMoney)"
+        } else {
+            return "error"
+        }
+        
+    }
+}
 
 
 
@@ -132,11 +166,38 @@ assert(transaction2.description == "Transaction: debit in the amount of $1.20", 
  
  Create an initializer for this class. It should only take one parameter: the owner of the account. When the class is first created (instantiated), the list of transactions should be empty.
  */
-// write your code here
 
 
 
 
+class BankAccount {
+    var owner: Person
+    var transactions: [Transaction] = []
+    
+    init(owner: Person) {
+        self.owner = owner //why isn't transactions initialized?
+    }
+    
+    func deposit(_ amount: Double) {  //why doesn't it work without underscore?
+        transactions.append(Transaction(type: "in", amount: amount))
+    }
+    
+    func withdraw(_ amount: Double) {
+        transactions.append(Transaction(type: "out", amount: amount))
+    }
+    
+    var balance: Double { //it's confusing when variables behave like functions and have variables within them!
+        var totalBalance: Double = 0.0
+        for money in transactions {
+            if money.type == "in" {
+                totalBalance += money.amount
+            } else {
+                totalBalance -= money.amount
+            }
+        }
+        return totalBalance
+    }
+}
 
 
 
